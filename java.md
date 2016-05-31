@@ -1,10 +1,40 @@
 Java
 ====
 
+## Setup
+
+Download Java Development Kit (JDK):
+
 ```
-sudo mv jdk1.7.0_05 /opt
-sudo ln -s jdk1.7.0_05 java-7-oracle
-sudo update-alternatives --install "/usr/bin/java" "java" /opt/java-7-oracle/bin/java 1
-sudo update-alternatives --install "/usr/bin/ControlPanel" "ControlPanel" /opt/java-7-oracle/bin/ControlPanel 1
-java -version
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+```
+
+Install JDK:
+
+```
+open ~/Downloads/jdk-8u74-macosx-x64.dmg
+```
+
+```
+echo 'export JAVA_HOME=`/usr/libexec/java_home`' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Download Apache Maven:
+
+```
+https://maven.apache.org/download.cgi
+```
+
+Install Apache Maven:
+
+```
+unzip ~/Downloads/apache-maven-3.3.9-bin.zip
+sudo mv apache-maven-3.3.9 /opt
+```
+
+Create a new project:
+
+```
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 ```
