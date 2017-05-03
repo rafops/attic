@@ -1,82 +1,25 @@
-# AWS SES
+# AWS SES Mailer
 
-```
+```bash
 export MAILER_TLD=example.com
-export MAILER_DOMAIN=mailer.$MAILER_TLD
+export MAILER_DOMAIN=$MAILER_TLD
+export MAILER_USER=no-reply
 export AWS_REGION=us-east-1
+export AWS_ACCOUNT_ID=…
 ```
 
-```
-aws s3api create-bucket --acl public-read --bucket $MAILER_DOMAIN
-aws s3 website s3://$MAILER_DOMAIN/ --index-document index.html --error-document error.html
-```
 
-```
-touch empty.html
-aws s3 cp empty.html s3://$MAILER_DOMAIN/index.html
-aws s3 cp empty.html s3://$MAILER_DOMAIN/error.html
-```
+## Domain Verification
 
-```
-cat >> website-policy.json <<-END
-{
-  "Version":"2012-10-17",
-  "Statement":[{
-    "Sid":"PublicReadGetObject",
-    "Effect":"Allow",
-    "Principal": "*",
-    "Action":["s3:GetObject"],
-    "Resource":["arn:aws:s3:::$MAILER_DOMAIN/*"]
-  }]
-}
-END
-
-```
-
-```
-aws s3api put-bucket-policy --bucket $MAILER_DOMAIN --policy file://website-policy.json
-```
-
-```
-curl -vvv http://$MAILER_DOMAIN.s3-website-$AWS_REGION.amazonaws.com/index.html
-```
-
-```
+```bash
 hosted_zone_id=`aws route53 list-hosted-zones --output text --query "HostedZones[?Name=='$MAILER_TLD.'].Id" | cut -d '/' -f 3`
 ```
 
-```
-cat >> website-route.json <<-END
-{
-  "Changes": [
-    {
-      "Action": "CREATE",
-      "ResourceRecordSet": {
-        "Name": "$MAILER_DOMAIN.",
-        "Type": "CNAME",
-        "TTL": 300,
-        "ResourceRecords": [
-          {
-            "Value": "$MAILER_DOMAIN.s3-website-$AWS_REGION.amazonaws.com"
-          }
-        ]
-      }
-    }
-  ]
-}
-END
+```bash
+verification_token=`aws ses verify-domain-identity --domain $MAILER_DOMAIN --region $AWS_REGION | jq -r '.VerificationToken'`
+```bash
 
-```
-
-```
-aws route53 change-resource-record-sets --hosted-zone-id $hosted_zone_id --change-batch file://website-route.json
-```
-
-```
-verification_token=`aws ses verify-domain-identity --domain _amazonses.$MAILER_DOMAIN | jq -r '.VerificationToken'`
-```
-
-```
+```bash
 cat >> mailer-txt.json <<-END
 {
   "Changes": [
@@ -99,19 +42,19 @@ END
 
 ```
 
-```
+```bash
 aws route53 change-resource-record-sets --hosted-zone-id $hosted_zone_id --change-batch file://mailer-txt.json
 ```
 
-```
+```bash
 aws ses get-identity-verification-attributes --identities $MAILER_DOMAIN --region $AWS_REGION
 ```
 
-```
+```bash
 verification_tokens=`aws ses verify-domain-dkim --domain $MAILER_DOMAIN --region $AWS_REGION | jq -r '.DkimTokens[]'`
 ```
 
-```
+```bash
 website_dkim() {
     cat >> mailer-dkim-$token.json <<-END
     {
@@ -137,8 +80,7 @@ END
 for token in `echo $verification_tokens` ; do website_dkim ; done
 ```
 
-
-```
+```bash
 verify_dkim() {
     aws route53 change-resource-record-sets --hosted-zone-id $hosted_zone_id --change-batch file://mailer-dkim-$token.json
 }
@@ -147,30 +89,52 @@ for token in `echo $verification_tokens` ; do verify_dkim ; done
 ```
 
 
+```bash
+aws ses get-identity-dkim-attributes --identities $MAILER_DOMAIN --region $AWS_REGION
 ```
-aws ses get-identity-dkim-attributes --identities $MAILER_DOMAIN --region us-east-1
+
+
+## MX
+
+```bash
+cat >> mailer-mx.json <<-END
+{
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "$MAILER_DOMAIN.",
+        "Type": "MX",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "10 inbound-smtp.$AWS_REGION.amazonaws.com"
+          }
+        ]
+      }
+    }
+  ]
+}
+END
+
+```
+
+```bash
+aws route53 change-resource-record-sets --hosted-zone-id $hosted_zone_id --change-batch file://mailer-mx.json
 ```
 
 
 ## Receipt Rule
 
-```
-export MAILER_USER=no-reply
-```
-
-```
+```bash
 aws ses create-receipt-rule-set --rule-set-name default-rule-set --region $AWS_REGION
 ```
 
-```
-aws s3api create-bucket --acl private --bucket $MAILER_USER.$MAILER_DOMAIN
-```
-
-```
-export AWS_ACCOUNT_ID=…
+```bash
+aws s3api create-bucket --acl private --bucket $MAILER_USER.$MAILER_DOMAIN --region $AWS_REGION
 ```
 
-```
+```bash
 cat >> mailer-policy.json <<-END
 {
   "Version":"2012-10-17",
@@ -193,20 +157,11 @@ END
 
 ```
 
-```
+```bash
 aws s3api put-bucket-policy --bucket $MAILER_USER.$MAILER_DOMAIN --policy file://mailer-policy.json
 ```
 
-```
-sns_suffix=`echo $MAILER_DOMAIN | sed s/\\\./_/g`
-sns_topic_name="$MAILER_USER""_$sns_suffix"
-```
-
-```
-sns_topic_arn=`aws sns create-topic --name $sns_topic_name --region $AWS_REGION | jq -r '.TopicArn'`
-```
-
-```
+```bash
 cat >> mailer-rule.json <<-END
 {
   "Name": "$MAILER_USER",
@@ -216,7 +171,6 @@ cat >> mailer-rule.json <<-END
   "Actions": [
     {
       "S3Action": {
-        "TopicArn": "$sns_topic_arn",
         "BucketName": "$MAILER_USER.$MAILER_DOMAIN",
         "ObjectKeyPrefix": "",
         "KmsKeyArn": ""
@@ -229,10 +183,11 @@ END
 
 ```
 
-```
+```bash
 aws ses create-receipt-rule --rule-set-name default-rule-set --rule file://mailer-rule.json --region $AWS_REGION
 ```
 
-```
+```bash
 aws ses set-active-receipt-rule-set --rule-set-name default-rule-set --region $AWS_REGION
 ```
+
