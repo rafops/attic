@@ -17,7 +17,7 @@ hosted_zone_id=`aws route53 list-hosted-zones --output text --query "HostedZones
 
 ```bash
 verification_token=`aws ses verify-domain-identity --domain $MAILER_DOMAIN --region $AWS_REGION | jq -r '.VerificationToken'`
-```bash
+```
 
 ```bash
 cat >> mailer-txt.json <<-END
