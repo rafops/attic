@@ -21,7 +21,7 @@ tfenv use 0.9.5
 ```
 
 
-## First Deploy
+## Deploy
 
 ```
 # instance.tf
@@ -62,4 +62,15 @@ Apply:
 
 ```
 terraform apply plan.terraform
+```
+
+## Destroy
+
+
+```
+terraform plan -out destroy.terraform -destroy
+```
+
+```
+terraform apply destroy.terraform
 ```
