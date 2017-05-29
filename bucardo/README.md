@@ -189,3 +189,9 @@ sudo su - postgres -c "dropdb bucardo"
 terraform plan -out destroy.terraform -destroy
 terraform apply destroy.terraform
 ```
+
+
+## References
+
+- https://icicimov.github.io/blog/database/PostgreSQL-DB-replication-with-Bucardo/
+- https://www.compose.com/articles/using-bucardo-5-3-to-migrate-a-live-postgresql-database/
