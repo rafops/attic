@@ -33,3 +33,5 @@ pip3 install --user --upgrade awscli
 echo '' >> ~/.zshrc
 echo '# Python 3 binaries (AWS CLI)' >> ~/.zshrc
 echo 'export PATH="$PATH:$HOME/Library/Python/3.6/bin"' >> ~/.zshrc
+
+# https://discussions.apple.com/thread/5543840?tstart=0
