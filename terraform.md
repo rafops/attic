@@ -1,5 +1,8 @@
 # Terraform
 
+- Configuration in two formats: `.tf` (HCL) and `.tf.json`
+
+
 ## Commands
 
 ```bash
@@ -64,8 +67,8 @@ Apply:
 terraform apply plan.terraform
 ```
 
-## Destroy
 
+## Destroy
 
 ```
 terraform plan -out destroy.terraform -destroy
@@ -73,4 +76,75 @@ terraform plan -out destroy.terraform -destroy
 
 ```
 terraform apply destroy.terraform
+```
+
+
+## Change
+
+Update scripts then:
+
+```
+terraform plan -out changes.terraform
+```
+
+```
+terraform apply changes.terraform
+```
+
+
+## Modules
+
+Creating a Consul cluster:
+
+```
+# consul.tf
+module "consul" {
+  source  = "github.com/hashicorp/consul/terraform/aws"
+  servers = 2
+  key_name = "consul"
+  key_path = "consul_rsa_key"
+  platform = "ubuntu"
+}
+```
+
+Download module:
+
+```
+terraform get
+```
+
+Create keys:
+
+```
+ssh-keygen -P '' -t rsa -f consul_rsa_key
+```
+
+Plan:
+
+```
+terraform plan -out plan.terraform
+```
+
+
+## VPC
+
+```
+https://github.com/terraform-community-modules/tf_aws_vpc
+```
+
+
+## Packer
+
+```
+packer build -machine-readable packer.json
+```
+
+Generate AMI, then is necessary to create a variable with the new AMI for terraform apply.
+
+
+## Graph
+
+```
+brew install graphviz
+terraform graph | dot -Tpng > graph.png
 ```
