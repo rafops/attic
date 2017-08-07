@@ -58,3 +58,43 @@
   - OpenFlow and “dumb” switching components
   - Global Software Load Balancer (GSLB); Geographic, service (YouTube, Maps), and RPC level
   - gRPC (uses “protobuf”, similar to Apache's Thrift)
+
+## 3. Embracing Risk
+
+- Users don't notice the difference between high reliability and extreme reliability.
+- Unplanned downtime.
+- availability = uptime / (uptime + downtime)
+- request success rate: agregate availability = successful requests / total requests. requests as viewed from the end-user perspective. useful for systems that doesn't run constantly (eg: batch system).
+- Is the cost of improving availability exceed the projected increase in revenue?
+- typical background error rate for ISPs between 0.01% and 1%
+- Product development performance is largely evaluated on product velocity, while SRE performance is evaluated based upon reliability of a service, which implies an incentive to push back against a high rate of change.
+- The error budget provides a clear metric that determines how unreliable the service is allowed to be, removing the politics from negotiation between SREs and product developers (how much risk to allow).
+- SLO: Service Level Objectives, per quarter.
+- As long there is error budget remaining, new releases can be pushed.
+
+## 4. Service Level Objectives
+
+- Service Level Indicators (SLI): Basic properties of metrics.
+  - Request latency.
+  - Error rate.
+  - System throughput.
+  - Availability.
+- How data is aggregated (require a bit of statistics here). Examples:
+  - 99% (averaged over 1 minute) of requests complete in less than 100 ms.
+  - 90% requests in less than 1 ms.
+  - 99.9% requests in less than 100 ms.
+- Build SLI templates for each common metric.
+
+- Service Level Objectives (SLO): What are metric values.
+  - lower bound ≤ SLI ≤ upper bound.
+  - What your users care about.
+  - Working from desired objectives backward to specific indicators works better than choosing indicators and then coming up with targets.
+  - Don't pick a target based on current performance.
+  - Choose just enough SLOs to provide good coverage of your system's attributes.
+  - Without SLO, you wouldn't know wether (or when) to take action.
+  - SLO set expectations. Keep a safety margin.
+
+- Service Level Agreements (SLA): How react if can't provide expected service.
+  - SLAs are closely tied to business and product decisions.
+
+
