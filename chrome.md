@@ -3,5 +3,5 @@
 Empty session:
 
 ```
-Google\ Chrome.app/Contents/MacOS/Google\ Chrome --kiosk --incognito about:blank
+Google\ Chrome.app/Contents/MacOS/Google\ Chrome --incognito about:blank
 ```
