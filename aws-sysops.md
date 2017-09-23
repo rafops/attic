@@ -81,3 +81,18 @@
 
 - External/Internal (within the VPC).
 - Use metrics such as SurgeQueueLength & SpilloverCount to scale.
+
+## Disaster Recovery
+
+- AWS Storage Gateway. On site appliance that replicates to S3 using VPN or Direct Connect.
+- Gateway-stored volumes: Store entire dataset on site and asynchronously replicate data back to S3.
+- Gateway-virtual tape library.
+- Recovery Time Objective (RTO): Length of time from which you can recover from a disaster.
+- Recovery Point Objective (RPO): Amount of data your organisation is prepared to lose.
+- Lower RTO/RPO = Higher cost.
+- Ensure appropriate retention policy.
+- Ensure security measures including encryption and access policies.
+- Pilot Light: A DR scenario in which a mnimal version of an environment is always running.
+- Pre-allocated EIPs or ENIs (when Mac Addresses for application licensing is required).
+- Warm Standby: Scaled down (horizontal scaling) standby copy of environment across region that can be scaled up quickly.
+- Use Route53 automated health checks.
