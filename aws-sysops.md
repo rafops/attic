@@ -96,3 +96,10 @@
 - Pre-allocated EIPs or ENIs (when Mac Addresses for application licensing is required).
 - Warm Standby: Scaled down (horizontal scaling) standby copy of environment across region that can be scaled up quickly.
 - Use Route53 automated health checks.
+
+## Data Management
+
+- EBS uses incremental snapshots.
+- Root volume (instance/ephemeral storage): OS. Delete on termination (default).
+- Additional volumes (EBS volumes attached to the instance): Data.
+- EC2 can be EBS backed. Volume is deleted when instance is terminated (set during creation time).
