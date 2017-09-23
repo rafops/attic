@@ -103,3 +103,9 @@
 - Root volume (instance/ephemeral storage): OS. Delete on termination (default).
 - Additional volumes (EBS volumes attached to the instance): Data.
 - EC2 can be EBS backed. Volume is deleted when instance is terminated (set during creation time).
+- Show volumes and mount points: `lsblk`.
+- Check if volume has data: `file -s /dev/xvdx`.
+- EBS volumes can be changed on the fly (except Magnetic).
+- Wait 6 hours before making another change on the fly.
+- Scale EBS volumes up only.
+- Volumes should be on same AZ. Take snapshots to move data to another AZ or region.
