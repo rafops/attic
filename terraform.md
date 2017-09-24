@@ -19,14 +19,6 @@ terraform plan
 terraform apply
 ```
 
-## Merging Tags
-
-```
-resource "aws_…" "…" {
-  tags = "${merge(var.tags, map("Name", format("%s", var.name)))}"
-}
-```
-
 ## VPC
 
 ### Do not create IGW if there is no public subnet
@@ -54,16 +46,23 @@ module "test-vpc" {
 
 ## Basic Module
 
-```
-terraform {
-  required_version = "~> 0.10.4"
-}
+**variables.tf**
 
+```
 variable "name" {
 }
+
 variable "tags" {
   description = "A map of tags to add to all resources"
   default     = {}
+}
+```
+
+**main.tf**
+
+```
+terraform {
+  required_version = "~> 0.10.6"
 }
 
 data "aws_availability_zones" "availability_zones" {}
@@ -76,7 +75,11 @@ locals {
 resource "aws_…" "…" {
   tags = "${local.tags}"
 }
+```
 
+**output.tf**
+
+```
 output "id" {
   value = "${aws_….….id}"
 }
