@@ -81,3 +81,31 @@
 
 - External/Internal (within the VPC).
 - Use metrics such as SurgeQueueLength & SpilloverCount to scale.
+
+## Disaster Recovery
+
+- AWS Storage Gateway. On site appliance that replicates to S3 using VPN or Direct Connect.
+- Gateway-stored volumes: Store entire dataset on site and asynchronously replicate data back to S3.
+- Gateway-virtual tape library.
+- Recovery Time Objective (RTO): Length of time from which you can recover from a disaster.
+- Recovery Point Objective (RPO): Amount of data your organisation is prepared to lose.
+- Lower RTO/RPO = Higher cost.
+- Ensure appropriate retention policy.
+- Ensure security measures including encryption and access policies.
+- Pilot Light: A DR scenario in which a mnimal version of an environment is always running.
+- Pre-allocated EIPs or ENIs (when Mac Addresses for application licensing is required).
+- Warm Standby: Scaled down (horizontal scaling) standby copy of environment across region that can be scaled up quickly.
+- Use Route53 automated health checks.
+
+## Data Management
+
+- EBS uses incremental snapshots.
+- Root volume (instance/ephemeral storage): OS. Delete on termination (default).
+- Additional volumes (EBS volumes attached to the instance): Data.
+- EC2 can be EBS backed. Volume is deleted when instance is terminated (set during creation time).
+- Show volumes and mount points: `lsblk`.
+- Check if volume has data: `file -s /dev/xvdx`.
+- EBS volumes can be changed on the fly (except Magnetic).
+- Wait 6 hours before making another change on the fly.
+- Scale EBS volumes up only.
+- Volumes should be on same AZ. Take snapshots to move data to another AZ or region.

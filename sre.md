@@ -97,4 +97,11 @@
 - Service Level Agreements (SLA): How react if can't provide expected service.
   - SLAs are closely tied to business and product decisions.
 
+## 5. Eliminating Toil
 
+- Overhead: Meetings, setting and grading goals, snippets (journal), and HR paperwork.
+- Grungy (dirty) work: Can sometimes have long-term value.
+- Toil: Work tied to running a production service that tends to be manual, repetitive. Toil becomes toxic when experienced in large quantities. Consequences: Career stagnation, burnout, boredom, and discontent.
+- Engineering work: Is novel and intrinsically requires human judgment. It produces a permanent improvement in your service, and is guided by a strategy. It is frequently creative and innovative, taking a design-driven approach to solving a problem—the more generalized, the better.
+- Software Engineering: Writing automation scripts, creating tools or frameworks, adding service features for scalability and reliability, or modifying infrastructure code to make it more robust.
+- Systems Engineering: Monitoring setup and updates, load balancing configuration, server configuration, tuning of OS parameters.
