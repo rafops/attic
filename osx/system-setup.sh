@@ -150,3 +150,7 @@ brew cask install vagrant
 # Install htop
 
 brew install htop
+
+# Install Shell check
+
+brew install shellcheck
