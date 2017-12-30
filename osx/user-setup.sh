@@ -34,4 +34,10 @@ echo '' >> ~/.zshrc
 echo '# Python 3 binaries (AWS CLI)' >> ~/.zshrc
 echo 'export PATH="$PATH:$HOME/Library/Python/3.6/bin"' >> ~/.zshrc
 
-# https://discussions.apple.com/thread/5543840?tstart=0
+# Install MDV (Markdown Viewer)
+
+pip3 instaall mdv
+
+# Other
+
+- https://discussions.apple.com/thread/5543840?tstart=0

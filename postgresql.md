@@ -4,20 +4,24 @@
 
 ```
 brew install postgresql
+```
+
+## Initialize Database
+
+```
+initdb /usr/local/var/postgres -E utf8
+```
+
+## Start Database Daemon
+
+```
 postgres --single -D /usr/local/var/postgres postgres
 ```
 
-```
-CREATE USER myuser WITH PASSWORD 'password' SUPERUSER;
-CREATE USER playground WITH PASSWORD 'playground' SUPERUSER;
-```
-
-Control+d to exit.
-
-Start server:
+## Create an User
 
 ```
-pg_ctl -D /usr/local/var/postgres start
+createuser --createdb --login --superuser --no-password $USER
 ```
 
 Connect to database:
@@ -26,19 +30,13 @@ Connect to database:
 psql postgres
 ```
 
-Locate configuration file:
+## Locate Configuration
 
 ```
 SHOW hba_file;
 ```
 
-Create additional user for application:
-
-```
-createuser -d myappusr
-```
-
-Stop server:
+## Stop server
 
 ```
 pg_ctl -D /usr/local/var/postgres stop
