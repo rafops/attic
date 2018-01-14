@@ -155,3 +155,13 @@
   - Someone should find and eliminate the root causes of the problem.
   - If such resolution isn’t possible, the alert response deserves to be fully automated.
  - Pages with algorithmic responses should be a red flag. Automating such pages covers the technical debt.
+ 
+## 7. The Evolution of Automation at Google
+
+- Common manual tasks: Creating user accounts, making sure backups happen, managing server failover, DNS updates, etc.
+- Very few of us will be consistent as a machine, leading to mistakes and reliability problems.
+- Automation provides a platform.
+- A platform also centralizes mistakes, a bug fix will be done once.
+- Google has a large amount of automation; in many cases, the services could no longer survive without this automation because they crossed the threshold of manageable manual operations a long ago.
+- Decoupling operator from operation is very powerful.
+- Google automation is often to manage lifecycle of systems, not their data.
