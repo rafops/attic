@@ -1,88 +1,192 @@
-# AWS Sysops
+# AWS Certified SysOps Administrator - Associate (SOA-C01)
 
-## CloudWatch
+- https://aws.amazon.com/certification/certified-sysops-admin-associate/
 
-- Minumum metric interval is 1 minute
-- System status check (Host)
-  - Stop/Start instance may solve issue
-- Instance status check (VM)
-- Create a Role "CloudWatch", select EC2 and add permission CloudWatch full access. EC2 Instance will be able to read and write into CloudWatch
-- Attach role "CloudWatch" to EC2 instance
-- Install a few Perl packages and download/install CloudWatch monitoring scripts
-- CloudWatch, create a new Dashboard
-- Run CloudWatch monitoring scripts from crontab
+## Study Material
 
-## Volume Types
+- [Exam Guide](https://d1.awsstatic.com/training-and-certification/docs-sysops-associate/AWS%20Certified%20SysOps%20-%20Associate_Exam%20Guide_Sep18.pdf)
+- [AWS Certified SysOps Administrator - Associate 2019](https://www.udemy.com/aws-certified-sysops-administrator-associate)
+- [Become AWS Certified - SysOps Administrator Practice Test](https://www.udemy.com/sysopstest)
+- [AWS Well-Architected Framework (June 2018)](https://d1.awsstatic.com/whitepapers/architecture/AWS_Well-Architected_Framework.pdf)
 
-- General Purpose SSD (gp2): Low-latency interactive apps, system boot volumes, most workloads. 
-- Provisioned IOPS SSD (io1): 20K IOPS/320 MiB/s throughput. Databases.
-- Throughput Optimized HDD (st1): high throughput. Streaming. Log processing. low price.
-- Cold HDD (sc1): large volume of data, infrequent access. lowest cost.
-- Performance: 3 IOPS per GiB of volume size. Max size 16TB. 3000 IOPS burstable using 5400000 I/O credits. burstable for 30 minutes.
-- Storage block volumes restored from snapshots requires [initialization](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-initialize.html):
+## Exam
 
-      sudo dd if=/dev/xvdf of=/dev/null bs=1M
+- No pre-requisites.
+- Multiple-choice and multiple-answer questions.
+- Multiple-choice has one correct response and three incorrect responses (distractors).
+- Multiple-answer has two or more correct responses out of five or more options.
+- 130 minutes to complete the exam.
+- 65 questions.
+- Practice exam registration fee is USD 20.
+- Exam registration fee is USD 150.
+- Your results for the examination are reported as a score from 100-1000, with a minimum passing score of 720.
+- Qualification is valid for 2 years.
 
-- Operations that are smaller than 256K count as 1 consumed IOPS. I/O operations larger than 256K are counted in 256K capacity units.
-- Volume status checks: ok, warning, impaired, insufficient data
+### Content Outline
 
-## Monitoring RDS
+- Domain 1: Monitoring and Reporting
+  - 1.1 Create and maintain metrics and alarms utilizing AWS monitoring services
+  - 1.2 Recognize and differentiate performance and availability metrics
+  - 1.3 Perform the steps necessary to remediate based on performance and availability metrics
+- Domain 2: High Availability
+  - 2.1 Implement scalability and elasticity based on use case
+  - 2.2 Recognize and differentiate highly available and resilient environments on AWS
+- Domain 3: Deployment and Provisioning
+  - 3.1 Identify and execute steps required to provision cloud resources
+  - 3.2 Identify and remediate deployment issues
+- Domain 4: Storage and Data Management
+  - 4.1 Create and manage data retention
+  - 4.2 Identify and implement data protection, encryption, and capacity planning needs
+- Domain 5: Security and Compliance
+  - 5.1 Implement and manage security policies on AWS
+  - 5.2 Implement access controls when using AWS
+  - 5.3 Differentiate between the roles and responsibility within the shared responsibility model
+- Domain 6: Networking
+  - 6.1 Apply AWS networking features
+  - 6.2 Implement connectivity services of AWS
+  - 6.3 Gather and interpret relevant information for network troubleshooting
+- Domain 7: Automation and Optimization
+  - 7.1 Use AWS services and features to manage and assess resource utilization
+  - 7.2 Employ cost-optimization strategies for efficient resource utilization
+  - 7.3 Automate manual or repeatable process to minimize management overhead
 
-- ReplicaLag may be an indicator of exceding IOPS capacity.
+## Domain 1: Monitoring and Reporting
 
-## ELB Metrics
+- 1.1 Create and maintain metrics and alarms utilizing AWS monitoring services
+- 1.2 Recognize and differentiate performance and availability metrics
+- 1.3 Perform the steps necessary to remediate based on performance and availability metrics
 
-- Every 60 seconds (with traffic).
+### CloudWatch
 
-## Elasticache
+- Monitor performance.
+- Host level metrics are CPU, Network, Disk, Status check. Memory is a custom metric.
+- Minimum metric interval is 1 minute (detailed monitoring), default is 5 minutes (standard monitoring).
+- Metrics are stored indefinitely, but retention can be configured for each Log Group.
+- Alarms can be created from any CloudWatch Metrics.
+- CloudWatch can be used on premisses servers by installing an SSM agent to ship logs to CloudWatch Logs.
+- Monitoring EC2:
+  - Create an IAM role "CloudWatch", select EC2 and add permission policy CloudWatchFullAccess. EC2 Instance will be able to read and write into CloudWatch.
+  - Attach IAM role "CloudWatch" to EC2 instance.
+  - Install a few Perl packages and download/install CloudWatch monitoring scripts.
+  - CloudWatch, create a new Dashboard.
+  - Run CloudWatch monitoring scripts from crontab.
+- Monitoring RDS:
+  - RDS ReplicaLag may be an indicator of exceeding IOPS capacity.
+- Monitoring ELB:
+  - ELB metrics can be obtained every 60 seconds (with traffic).
+  - ELB can be monitored using CloudWatch metrics, access logs, request tracing, or CloudTrail logs.
+- Monitoring Elasticache:
+  - SwapUsage should be around 0 most of the time. If exceeds 50Mb you should increase the memcached_connections_overhead parameter (amount of memory for connections).
+  - Redis instead use reserved-memory.
+  - Evictions metrics tells you about memory consumption.
+  - Concurrent connections spikes might be due to application not releasing connections properly.
+- System status check monitors the host health.
+  - Stop/Start instance may solve issue. Does it moves the VM to a new host?
+- Instance status check monitors the VM health.
 
-- SwapUsage should be around 0 most of the time. If exceeds 50Mb you should increase the memcached_connections_overhead parameter (amount of memory for connections).
-- Redis instead use reserved-memory.
-- Evictions metrics tells you about memory consumption.
-- Concurrent connections spikes might be due to application not releasing connections properly.
+### CloudTrail
 
-## Centralized Monitoring
-
-- Enterprise monitoring solutions: Zennos, ?Nimsoft, Splunk, …
-- Most basic monitoring uses ICMP. Configure security groups to allow ICMP to specific range of IPs within your VPC (monitoring servers).
-
-## AWS Organizations/Consolidate Billing
-
-- Apply policies per organization unit.
-- Paying Account -> Test/Production accounts -> Monthly bill
-- Consolidate billing has de advantage of cost reduction (S3, reserved instances, etc.)
+- CloudTrail monitors API calls in the AWS platform.
 - CloudTrail can be consolidated by aggregating logs into a single bucket in the paying or production account.
 
-## Cost Optimization
+### AWS Config
 
-- TODO: How to use spot instances effectivelly. Maybe for running tests (CI)?
-- Mix reserved instances (heavy/medium) and on-demand instances utilization and autoscaling for reducing costs depending on a pattern usage.
+- Record the state of your AWS environment.
+- Enables compliance auditing, security analysis, and resource tracking.
+- Logs configuration changes.
+- Automated compliance checking.
+- AWS Config requires:
+  - An IAM Role with read-only permissions to the recorded solutions.
+  - Write access to S3 logging bucket.
+  - Publish access to SNS.
+- Compliance checks are triggered periodically or by configuration changes.
+- You can use managed rules or custom rules.
 
-## Elasticity/Scalability
+### AWS Organizations
 
+- Centrally manage policies across multiple AWS accounts.
+- Control access to AWS services:
+  - Service Control Policies (SCPs) centrally control AWS service across multiple AWS accounts, allowing or denying individual services.
+  - You need to enable SCP into a group.
+  - Policies attached to a group (organization unit) are applied automatically to sub-accounts.
+  - Create an organization unit and attach policy to it. The policy can include services and actions.
+- Automate AWS account creation and management.
+- Consolidate billing across multiple AWS accounts:
+  - Paying Account -> Test/Production accounts -> Monthly bill.
+  - Consolidate billing has de advantage of cost reduction (S3, reserved instances, etc.).
+
+### AWS Resource Groups & Tagging
+
+- Key value pairs attached to AWS resources.
+- Resource groups group your resources using the tags that are assigned to them.
+- There are two types: Classic Resource Groups (global) or the new AWS Systems Manager (per region).
+- AWS Systems Manager let you run automation on a group of resources.
+
+### Pricing Model
+
+- On Demand you pay a fixed rate by hour.
+- Reserved (up to 75% discount), one or three year terms.
+- Spot instances when you have flexible start and end times.
+- Dedicated host (useful for regulatory requirements, licensing, etc.).
+- Cost optimization:
+  - TODO: How to use spot instances effectively. Maybe for running tests (CI)?
+  - Mix reserved instances (heavy/medium) and on-demand instances utilization and autoscaling for reducing costs depending on a pattern usage.
+
+### Health Dashboard
+
+- Service Health Dashboards monitors AWS services health.
+- Personal Health Dashboards provides alerts and remediation when your resources are affected.
+
+### Billing Alarms
+
+- You can create billing alarms to automatically alert you when you go above a pre-defined cost that you set.
+
+## Domain 2: High Availability
+
+### Elasticity/Scalability
+
+- Scalability: Increase instance sizes as required (long term).
+- Elasticity: Increase number of EC2 instances based on autoscaling (short term).
 - Scale up (vertical): Traditional IT. Increase instance type.
 - Network performance used to be based on instance type. EBS Optimized Network Performance (Scale up).
 - NAT scaling: Increase NAT size (Scale up) or add multiple NAT and make route on multiple NAT (Scale out).
+- RDS has good scalability (increase instance size) but not much elasticity (can't scaled on demand).
+- Aurora has good scalability and elasticity (Aurora serverless).
 
-## RDS Multi-AZ failover
+### RDS Multi-AZ failover
 
 - You can force a failover by rebooting your instance.
-- RDS Multi-AZ failover is not a SCALING SOLUTION.
-- Read replicas are used to scale.
+- RDS Multi-AZ failover is not a SCALING SOLUTION. Is done by updating DNS endpoint to failover replica.
+- Multi-AZ replication is synchronous and read replicas are asynchronous.
+- Read replicas are used to scale. Maximum of 5 nodes.
 - Creating read replicas if Multi-AZ is enabled will take snapshot from secondary database.
 - Key metric is replica LAG.
 - Read replica creation requires backups enabled.
+- Aurora replicas share the same storage (cluster volume) instead of copying data to replica nodes.
 
-## Bastion
+### Elasticache
+
+- In memory cache.
+- Memcache or Redis.
+
+### Aurora
+
+- High performance (5x MySQL, 3x PostgreSQL).
+- 10 GiB increments up to 64 TB.
+- Cluster volume has two copies of your data in each of a minimum of 3 AZs. Storage is self-healing.
+- 100% CPU scales up (increase instance size).
+- More read capacity scale out (increase replicas).
+
+### Bastion
 
 - Use two public subnets with Route 53 failover for high availability of bastion hosts.
 
-## Elastic Load Balancer
+### Elastic Load Balancer
 
 - External/Internal (within the VPC).
 - Use metrics such as SurgeQueueLength & SpilloverCount to scale.
 
-## Disaster Recovery
+### Disaster Recovery
 
 - AWS Storage Gateway. On site appliance that replicates to S3 using VPN or Direct Connect.
 - Gateway-stored volumes: Store entire dataset on site and asynchronously replicate data back to S3.
@@ -96,6 +200,90 @@
 - Pre-allocated EIPs or ENIs (when Mac Addresses for application licensing is required).
 - Warm Standby: Scaled down (horizontal scaling) standby copy of environment across region that can be scaled up quickly.
 - Use Route53 automated health checks.
+
+## Domain 3: Deployment and Provisioning
+
+### Deploying EC2
+
+- InstanceLimitExceeded error happens when you have reached the maximum allowed for the region (20 by default).
+- InsufficientInstanceCapacity error happens when AWS does not currently have
+  enough available on demand instances. Purchasing reserved instances in advance can solve this issue.
+
+### EBS Volume Types
+
+- General Purpose SSD (gp2): Low-latency interactive apps, system boot volumes, most workloads.
+  - 3 IOPS per GiB of volume size, maximum of 10000 IOPS. Max size 16TB.
+  - The base IOPS is always 100 when disk is < 33.33GB.
+- Provisioned IOPS SSD (io1): 50 IOPS/GiB, maximum of 32000 IOPS. Use case: Databases.
+- Throughput Optimized HDD (st1): high throughput. Streaming. Log processing. Low price.
+- Cold HDD (sc1): large volume of data, infrequent access. lowest cost.
+- Magnetic.
+- To extend an EBS volume you need to perform a snapshot and restore into a larger volume.
+- A volume can only be attached to the same AZ it was created.
+- Performance:
+  - 3000 IOPS burstable using 5400000 I/O credits. burstable for 30 minutes.
+  - Anything over 10000 IOPS use PIOPS.
+  - When you hit the IOPS limit you will see I/O requests queueing.
+  - Storage block volumes restored from snapshots requires [initialization](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-initialize.html):
+
+      sudo dd if=/dev/xvdf of=/dev/null bs=1M
+
+  - Operations that are smaller than 256K count as 1 consumed IOPS. I/O operations larger than 256K are counted in 256K capacity units.
+- Volume status checks: ok, warning, impaired, insufficient data.
+
+### Bastion Host
+
+- A bastion is on a public subnet and is an internet facing host.
+- Used to securely connect to instances on a private subnet (SSH/RDP).
+
+### Elastic Load Balancers (ELB)
+
+- Application load balancer. Layer 7 (HTTP).
+- Network load balancer. Layer 4, load balancing TCP traffic, low lattency. Creates an static IP per subnet that helps to maintain simple firewall rules.
+- Classic load balancer. Legacy. Layer 4 and basic layer 7 features.
+- Pre-warm load balances for sudden spike of traffic. Request AWS by specifying dates, RPM and size of request.
+- Error codes indicating error on the application server:
+  - 400 Bad request (eg.: malformed headers)
+  - 401 Unauthorized. User access denied.
+  - 403 Forbidden. Request blocked by WAF or ACL.
+  - 460 Client closed connection. Application server timeout may be too short.
+  - 463 X-Forwarded-For with more than 30 IP addresses.
+- Error codes indicating problem on the load balancer:
+  - 500 Error with load balancer configuration.
+  - 502 Bad gateway application server connection/response problem.
+  - 503 Service Unavailable. No targets.
+  - 504 Gateway Timeout. App server not responding.
+  - 561 Unauthorized. Identity provider error on the load balancer.
+- Publish metrics to CloudWatch by default gathered at 60 seconds interval that includes:
+  - Backend connection errors count.
+  - Healthy/Unhealthy host count.
+  - HTTP status errors count.
+  - Latency (response time).
+  - Request count.
+  - SurgeQueueLenght: Maximum is 1024 on classic load balancer.
+  - SpilloverCount: Count rejected requests.
+
+### AWS Systems Manager
+
+- Organize inventory (including on premisses) grouping resources together.
+- Integrates with CloudWatch dashboards.
+- Run Command automate tasks such as patching.
+- Built-in insight includes Trust Advisor for cost optimization, performance, security, etc; Also suggesting recommended actions.
+
+## Domain 4: Storage and Data Management
+
+- 
+
+
+## Domain 5: Security and Compliance
+## Domain 6: Networking
+## Domain 7: Automation and Optimization
+
+
+
+
+
+
 
 ## Data Management
 
