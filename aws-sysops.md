@@ -141,7 +141,7 @@
 
 - You can create billing alarms to automatically alert you when you go above a pre-defined cost that you set.
 
-## Domain 2: High Availability
+## High Availability
 
 ### Elasticity/Scalability
 
@@ -201,7 +201,7 @@
 - Warm Standby: Scaled down (horizontal scaling) standby copy of environment across region that can be scaled up quickly.
 - Use Route53 automated health checks.
 
-## Domain 3: Deployment and Provisioning
+## Deployment and Provisioning
 
 ### Deploying EC2
 
@@ -270,19 +270,87 @@
 - Run Command automate tasks such as patching.
 - Built-in insight includes Trust Advisor for cost optimization, performance, security, etc; Also suggesting recommended actions.
 
-## Domain 4: Storage and Data Management
+## Storage and Data Management
 
-- 
+### S3
+
+- S3 is object-based key-value storage with versioning and metadata capabilities.
+- S3 buckets have universal namespace, can contain policies, access control lists, CORS configurations, transfer accelerations, lifecycle management, and encryption.
+- File size can range from 0 bytes to 5TB, but there is virtually unlimited storage and built for 99.99% availability (99.9% guarantee), and 99.999999999% durability.
+- HTTP 200 if upload is successful.
+- Data consistency is immediate read after write of a new object, but eventual consistent for updates (PUT) and deletes.
+- IA (Infrequent Access) has lower fees than S3 but you're charged a retrieval fee.
+- One-zone IA has 99.5% availability and costs 20% less than regular IA.
+- Reduced Redundancy Storage 99.99% durability/availability used for data that can be recreated if lost (deprecated?).
+- Glacier is optimized for archival only (restore may take 3-5 hours).
+- Charged by GB stored, requests and data transfer.
+
+- Lifecycle:
+	- When defining an S3 lifecycle policy, configure object transition to IA after 90 days and to Glacier after 1 year or expire (auto delete).
+	- With version enabled a DELETE action doesn't delete the object version, but applies a delete mark instead.
+	- MFA delete will require a code to permanently delete an object version or change versioning configuration.
+
+- Encryption:
+	- Encryption in transit using SSL/TLS.
+	- S3 managed keys (SSE-S3).
+	- AWS KMS.
+	- Customer provided keys (SSE-C).
+	- Client side encryption.
+	- A bucket policy can enforce the use of server-side encryption by denying upload requests that doesn't include x-amz-server-side-encryption header.
+
+### EBS
+
+- Root device (where OS is installed) can be either EBS volume or instance store (ephemeral) volume.
+- Instance store root device max size is 10GB.
+- EBS root can be up to 2TB.
+- Root device is terminated with the instance. Other EBS volumtes attached are preserved.
+- EBS backed instances can be stopped, but the ones with Instance Store can only be rebooted or terminated.
+- Snapshots are stored on S3, are point in time copies of volumes and are incremental since your last snapshot. First snapshot may take some time to create.
+- Snapshot from EBS root devices require stopping the instance.
+- AMIs can be created from both images and snapshots.
+- EBS volume size/storage type can be changed on the fly.
+- Volume is always on the same AZ of EC2. To move copy a snapshot or image to another AZ or region.
+- Snapshots of encrypted volumes are encrypted automatically. You can share snapshots only if they're not encrypted.
+
+### Encryption
+
+- Mostly encryption can only be enabled at creation or when restoring from unencrypted snapshot (EFS, RDS, EBS volumes, etc.). S3 encryption can be enabled at any time of individual S3 objects.
+- KMS is a shared hardware multi tenant managed service.
+- Cloud HSM provide a dedicated HSM (hardware security module) instance. HSM is under your control and available only to your VPC. FIPS 140-2 Level 3 compliance. Suitable for contractural/regulatory requirements (financial services, etc.). Enables use of assymetrics keys.
+
+### AMIs
+
+- It's a template to launch EC2 instances containing the root volume, launch permissions, and EBS volume mapping.
+- You need to register a custom AMI before use.
+- AMIs are registered on a per-region basis.
+- AMIs can be copied between different accounts. 
+- Encrypted AMIs requires copying the snapshot, re-encrypting with a new key and creating a new AMI from snapshot.
+- For proprietary AMIs with license (billingProducts), launch an EC2 and create an AMI from the instance.
+
+### Snowball
+
+- Snowball allows transporting data to AWS in the order of 100s of TB or PB (data transfer only).
+- Snowball edge allows creating a S3 compatible endpoint within your network with NFS, etc.
+
+### Storage Gateway
+
+- VMWare ESXi or Microsoft Hyper-V on your on premisses data center.
+- File gateway accessed locally via NFS/SMB and stored as objects in your S3 buckets.
+- Volume gateway iSCSI. Cloud backed storage. Types:
+  - Gateway stored volumes: Store data locally (SAN, NAS, DAS), async backup to AWS in the form of EBS snapshots.
+  - Gateway cached volumes: Use S3 as primary storage and cache data frequently accessed in your storage gateway.
+- Tape gateway: virtual tape (VTL) that archives to Glacier. Integrates with existing tape backup infrastructure.
+
+### Athena
+
+- Serverless.
+- SQL data stored in S3. No need of complex ETL process.
+
+## Security and Compliance
 
 
-## Domain 5: Security and Compliance
-## Domain 6: Networking
-## Domain 7: Automation and Optimization
-
-
-
-
-
+## Networking
+## Automation and Optimization
 
 
 ## Data Management
