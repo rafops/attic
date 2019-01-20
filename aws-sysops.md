@@ -348,10 +348,88 @@
 
 ## Security and Compliance
 
+### DDoS protection
+
+- AWS Shield is a free service that protect AWS customers on ELB, CloudFront and Route53.
+- AWS Shield Advanced (enhanced protection for more sophisticated attacks) costs $3k/mo.
+
+### IAM
+
+- Attached roles to EC2 takes effect immediately.
+- Police changes take effect immediately.
+
+### Logging
+
+- CloudTrail: Records API calls.
+- Config: Record configuration changes.
+- CloudWatch Logs: Monitors performance.
+- VPC Flow logs: Records VPC network logs.
+
+### Hypervisor
+
+- EC2 currently runs on Xen Hypervisors.
+- Guest operating systems can run either as a paravirtualization (PV) or hardware virtual machine (HVM).
+- AWS recommends using HVM over PV. Linux can be both PV and HVM.
+- PV is isolated by layers, guest OS is L1, applications on L3.
+- AWS admins have access to the hypervisor but not the guest hosts.
+- Security groups runs on firewall on the hypervisor layer: Physical hardware > Firewall > SGs > Virtual Interface > Hypervisor > Customer.
+- EBS volumes and allocated memory are scrubbed before returning to the pool.
+
+### Dedicated Instances
+
+- Dedicated instances runs on hardware dedicated to a single customer, but may share hardware with other instances from the same AWS account.
+- Dedicated hosts gives you additional control where instances are placed on a physical server (for licensing/compliance purposes).
+
+### Shared responsibility Model
+
+- AWS: Global infrastructure, hardware, software, networking, and managed services (eg: RDS).
+- Customer: Updates, security patches, security groups, network ACLs.
 
 ## Networking
+
+### Routing Policy
+
+- Simple: Return IP addresses in a random order.
+- Weighted: Send certain amount of traffic to different destinations.
+- Latency: Send traffic to the lowest latency endpoint.
+- Failover: Define an active/passive sites, when active health check fails, it failover to passive.
+- Geolocation: Traffic on user geolocation.
+- Multivalue: When health check fails in one of the values, the traffic goes to the other records.
+
+## VPC
+
+- Security groups are stateful (opening inbound traffic to a port allows responding with outbout traffic). SGs are assigned to instances (network interfaces).
+- Network access control are stateless (inbound/outbound need to explicitly opened). NACLs are assigned to subnets.
+- NAT instances (launched with AMI prefix amzn-ami-vpc-nat). Disable source/destination check (disable the check that verifies the instance is be the source or destination of any traffic it sends or receives).
+- Prefer using NAT gateway instead of NAT instances for HA.
+- AWS S3 Gateway is HA.
+- ALB require at least two public subnets for HA.
+- VPC Flow Logs track IP traffic in/out from your ENIs in on your VPC/Subnet/ENI resources. DNS, instance metadata host, DHCP are not monitored.
+- VPC flow logs for a peered VPC is only possible if in the same account.
+- NAT gateways are HA.
+
 ## Automation and Optimization
 
+### CloudFormation
+
+- Template (JSON/YAML) => API calls.
+- Upload to CloudFormation using S3.
+- Resulting resources are called stack.
+- Resources is the only require section of template.
+- Transform section allows loading external dependencies such as Lambda scripts or other CloudFormation scripts.
+- Mappings maps AMIs/regions.
+
+### Elastic Beanstalk
+
+- A service to deploy/scale apps in popular languages.
+- You can choose having administration control of the resources or choosing Elastic Beanstalk controlling them for you.
+- Automatically manage platform updates.
+- Monitor/manage app health.
+- Integrate with CloudWatch/X-Ray.
+
+### OpsWorks
+
+- Automate server configuration with Chef/Puppet.
 
 ## Data Management
 
