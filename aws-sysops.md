@@ -303,7 +303,7 @@
 - Root device (where OS is installed) can be either EBS volume or instance store (ephemeral) volume.
 - Instance store root device max size is 10GB.
 - EBS root can be up to 2TB.
-- Root device is terminated with the instance. Other EBS volumtes attached are preserved.
+- Root device is terminated with the instance. Other EBS volumes attached are preserved.
 - EBS backed instances can be stopped, but the ones with Instance Store can only be rebooted or terminated.
 - Snapshots are stored on S3, are point in time copies of volumes and are incremental since your last snapshot. First snapshot may take some time to create.
 - Snapshot from EBS root devices require stopping the instance.
@@ -345,6 +345,19 @@
 
 - Serverless.
 - SQL data stored in S3. No need of complex ETL process.
+
+### Data Management
+
+- EBS uses incremental snapshots.
+- Root volume (instance/ephemeral storage): OS. Delete on termination (default).
+- Additional volumes (EBS volumes attached to the instance): Data.
+- EC2 can be EBS backed. Volume is deleted when instance is terminated (set during creation time).
+- Show volumes and mount points: `lsblk`.
+- Check if volume has data: `file -s /dev/xvdx`.
+- EBS volumes can be changed on the fly (except Magnetic).
+- Wait 6 hours before making another change on the fly.
+- Scale EBS volumes up only.
+- Volumes should be on same AZ. Take snapshots to move data to another AZ or region.
 
 ## Security and Compliance
 
@@ -431,15 +444,34 @@
 
 - Automate server configuration with Chef/Puppet.
 
-## Data Management
+## Review
 
-- EBS uses incremental snapshots.
-- Root volume (instance/ephemeral storage): OS. Delete on termination (default).
-- Additional volumes (EBS volumes attached to the instance): Data.
-- EC2 can be EBS backed. Volume is deleted when instance is terminated (set during creation time).
-- Show volumes and mount points: `lsblk`.
-- Check if volume has data: `file -s /dev/xvdx`.
-- EBS volumes can be changed on the fly (except Magnetic).
-- Wait 6 hours before making another change on the fly.
-- Scale EBS volumes up only.
-- Volumes should be on same AZ. Take snapshots to move data to another AZ or region.
+### Section 1
+
+- During the AMI creation snapshots are created from EBS volumes, and the AMI will include block device mappings for any instance store volumes. You can create AMIs either from instance store or EBS backed instances.
+- Pre warming is not necessary for EBS volumes anymore (they're stored in S3). To retrieve the volume data from S3 immediately, **initialize** the volume.
+- You can't convert an instance stored Windows AMI into a EBS AMI, but it is possible with Linux AMIs.
+- root EBS volumes are deleted on termination.
+- You cannot encrypt/decrypt an existing volume. EBS encryption encrypts data at rest and transit between EBS and instance. You cannot encrypt an EBS volume by taking a snapshot.
+- If you set InstanceInitiatedShutdownBehaviour, the instance will be either stopped/terminated when there's a instance initiated shutdown.
+- When you **get system log** on an EC2 instance, a Windows instance will show the last three system event log errors and a Linux will display the output from a physical monitor attached to it.
+- `dd` and `fio` can be used to initialize an EBS volume created from a snapshot.
+
+### Section 2
+
+- Provisioned IOPS SSD (io1): 50 IOPS/GiB
+- 50 IOPS/GiB, maximum of 32000 IOPS. Disk must be >= 640 GiB for maximum performance.
+- A provisioned IOPs EBS volume can be up to 16 TB in size.
+- The maximum size of a file you can upload to S3 using the console is 78 GB.
+- When you create a VPC with public/private subnets, the main route table is used for the private subnet.
+- If you need to restrict resource access to users, use IAM variables and create a resource for each user.
+- Use ACL to block traffic from an IP range in a VPC.
+- Use scheduled actions on ASG to build capacity proactively and give instances time to warm up before they're needed.
+- If you receive an error InsufficientInstanceCapacity wait a few minutes or try creating an instance without specifying an AZ.
+- monitoring.us-east-1.amazonaws.com is a valid CloudWatch endpoint URL.
+- When restoring from Glacier, you're billed for both temporary and archive copies, you can copy the temporary restored copy to S3 for long term acces, and you need to specify the duration for the temporary copy of restored data.
+- When sending data to CloudWatch using the API, UTC is recommended but not required, and the timestamp can be up to two weeks in the past and two hours in the future.
+
+### Section 3
+
+- 
