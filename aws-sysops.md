@@ -474,4 +474,29 @@
 
 ### Section 3
 
-- 
+- Using CloudWatch to monitor metrics from EMR, metrics are updated every 5 minutes, and this interval cannot be changed. Also, there is no charge to report EMR metrics to CloudWatch.
+- To get Route53 metrics from CloudWatch, use us-east-1 region. CloudWatch provides detailed metric of Route53 by default.
+- DynamoDB, Redshift and RDS comes with snapshot backup solution builtin.
+- When you create a launch configuration using the Console, basic monitoring is enabled. But when using the CLI or API, detailed monitoring is enabled by default.
+- An S3 bucket ACL can grantee access to one of the following predefined groups: All Users, Log Delivery, or Authenticated Users.
+- For an EBS backed instance, you can choose stop or terminate.
+- For an instance store backed instance, the shutdown behaviour must be terminate.
+- MS SQL requires synchronous logical replication to support Multi-AZ.
+- When creating a subnet with address range too large, delete and create smaller subnets.
+- If you create a subnet that occupies the full CIDR of the VPC, an error will occur if you try to create a new subnet.
+- In CloudFormation, to wait until an instance is created, add the DependsOn attribute to the next resource, and create a Wait Condition on the EC2.
+- The maximum size of PutMetricData HTTP POST request to CloudWatch is 40 KB.
+- To create an RDS event notification subscription, create it in the RDS console then chosse Yes to enable it.
+
+
+### Section 4
+
+- If an instance store backed EC2 is impaired, you'll need to terminate the instance and create a replacement.
+- Instances are registered to a classic load balancer by IP address.
+- Elastic load balancers supports TLS 1.2, 1.1, 1.0 and SSL v3
+- If an instance that is EBS backed is impaired, stop and start instance to fix.
+- When sharing AMI cross account, once AMI is copied, original account has no access to copied version.
+- The maximum draining timeout for an ELB is 60 minutes.
+- If ASG fails to launch instances after 24hrs is suspended.
+- If you delete a VPC, a VPN VPG will be detached and can be attached to a different VPC.
+- In SQS, messages are retained for 4 days by default, up to a maximum of 14 days.
