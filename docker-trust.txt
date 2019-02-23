@@ -1,0 +1,176 @@
+DOCKER TRUST
+
+export DOCKER_CONTENT_TRUST=1
+
+docker login
+
+docker build -t rafops/trust-test-1:0.1.0 .
+
+docker push rafops/trust-test-1:0.1.0
+
+“if you’re automatically creating new builds, you need to be able to supply the passphrase for the key to sign the image. Docker does provide a mechanism to do this using environment variables, but you’ll want to be very sure of the security of your build host when doing this.”
+
+~/.docker/trust/private/c234fffd7500d69674581b7b80b5c34320df33733eece8a564e01240bb6c3170.key
+
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+role: root
+
+MIHuMEkGCSqGSIb3DQEFDTA8MBsGCSqGSIb3DQEFDDAOBAjrgEloIY5WVQICCAAw
+…
+gA==
+-----END ENCRYPTED PRIVATE KEY-----
+
+“The other key that was created is the tagging key.”
+
+~/.docker/trust/private/e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037.key
+
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+gun: docker.io/rafops/trust-test-1
+role: targets
+
+MIHuMEkGCSqGSIb3DQEFDTA8MBsGCSqGSIb3DQEFDDAOBAhmD7FO+dyOiQICCAAw
+…
+rg==
+-----END ENCRYPTED PRIVATE KEY-----
+
+
+unset DOCKER_CONTENT_TRUST
+
+docker build -t rafops/trust-test-1:0.1.1 .
+docker push rafops/trust-test-1:0.1.1
+docker image rm baaaa99b77d2 --force
+
+export DOCKER_CONTENT_TRUST=1
+
+docker run --rm rafops/trust-test-1:0.1.1                                                                                                                                                               [11:15:15]
+docker: No valid trust data for 0.1.1.
+
+docker run --rm rafops/trust-test-1:0.1.0                                                                                                                                                               [11:15:21]
+Unable to find image 'rafops/trust-test-1:0.1.0' locally
+sha256:bbb333d310351091e4a914ca3be5579afe0d62e42ff9609b7055eba30448f83a: Pulling from rafops/trust-test-1
+6c40cc604d8e: Already exists
+Digest: sha256:bbb333d310351091e4a914ca3be5579afe0d62e42ff9609b7055eba30448f83a
+Status: Downloaded newer image for rafops/trust-test-1@sha256:bbb333d310351091e4a914ca3be5579afe0d62e42ff9609b7055eba30448f83a
+Tagging rafops/trust-test-1@sha256:bbb333d310351091e4a914ca3be5579afe0d62e42ff9609b7055eba30448f83a as rafops/trust-test-1:0.1.0
+Sat Feb 23 16:15:29 UTC 2019
+
+
+
+docker trust inspect rafops/trust-test-1:0.1.0 | jq '.|first.SignedTags|first'                                                                                                                          [11:25:27]
+{
+  "SignedTag": "0.1.0",
+  "Digest": "bbb333d310351091e4a914ca3be5579afe0d62e42ff9609b7055eba30448f83a",
+  "Signers": [
+    "Repo Admin"
+  ]
+}
+
+docker trust inspect rafops/trust-test-1:0.1.1 | jq '.|first.SignedTags|first'
+<empty>
+
+
+
+mv ~/.docker/trust ~/.docker/trust___
+
+
+docker build -t rafops/trust-test-1:0.2.0 .
+docker push rafops/trust-test-1:0.2.0
+
+
+export DOCKER_CONTENT_TRUST=1
+docker build -t rafops/trust-test-1:0.2.1 .
+docker push rafops/trust-test-1:0.2.1
+
+ERRO[0006] couldn't add target to targets: could not find necessary signing keys, at least one of these keys must be available: e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037
+failed to sign docker.io/rafops/trust-test-1:0.2.1: could not find necessary signing keys, at least one of these keys must be available: e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037
+
+
+
+docker trust inspect rafops/trust-test-1                                                                                                                                                                [11:31:14]
+[
+    {
+        "Name": "rafops/trust-test-1",
+        "SignedTags": [
+            {
+                "SignedTag": "0.1.0",
+                "Digest": "bbb333d310351091e4a914ca3be5579afe0d62e42ff9609b7055eba30448f83a",
+                "Signers": [
+                    "Repo Admin"
+                ]
+            }
+        ],
+        "Signers": [],
+        "AdministrativeKeys": [
+            {
+                "Name": "Root",
+                "Keys": [
+                    {
+                        "ID": "ddd444e3575e218db8b65fabde01bfbb848ee3b4009c7c9787111f72f45a8403"
+                    }
+                ]
+            },
+            {
+                "Name": "Repository",
+                "Keys": [
+                    {
+                        "ID": "e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037"
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+
+docker trust inspect mycorp/app 2>/dev/null | jq '.|first'
+<empty>
+
+
+docker trust key generate leafar
+
+Enter passphrase for new leafar key with ID f24edbc: …
+
+
+docker trust key generate leafar                                                                                                                                                                             [11:34:26]
+Generating key for leafar...
+Enter passphrase for new leafar key with ID f24edbc:
+Repeat passphrase for new leafar key with ID f24edbc:
+Successfully generated and loaded private key. Corresponding public key available: ~/Projects/trust-test-1/leafar.pub
+
+
+docker trust signer add --key leafar.pub leafar rafops/trust-test-1                                                                                                                                         [11:35:26]
+Adding signer "leafar" to rafops/trust-test-1...
+could not find necessary signing keys, at least one of these keys must be available: e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037
+
+Failed to add signer to: rafops/trust-test-1
+
+
+
+docker trust key load root.key                                                                                                                                                                             [11:38:34]
+Loading key from "root.key"...
+Enter passphrase for encrypted key:
+Successfully imported key from root.key
+
+
+docker trust key load trust-test-1.key
+
+
+~/Projects/trust-test-1 find ~/.docker/trust___/private                                                                                                                                                                            [11:44:07]
+~/.docker/trust___/private
+~/.docker/trust___/private/c234fffd7500d69674581b7b80b5c34320df33733eece8a564e01240bb6c3170.key
+~/.docker/trust___/private/e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037.key
+~/Projects/trust-test-1 find ~/.docker/trust/private                                                                                                                                                                               [11:44:29]
+~/.docker/trust/private
+~/.docker/trust/private/f24edbcb27bc9fd97145e7fa0e8a23ff2108da97a2493425791b2993805db796.key
+
+
+
+cp trust-test-1.key ~/.docker/trust/private/e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037.key
+chmod 600 ~/.docker/trust/private/e42bcdeaee41a447aec352d54942da9cadb8985e172bfe475818dca742bf5037.key
+
+
+
+docker trust signer add --key leafar.pub leafar rafops/trust-test-1                                                                                                                                         [11:52:40]
+Adding signer "leafar" to rafops/trust-test-1...
+Enter passphrase for repository key with ID e42bcde:
+Successfully added signer: leafar to rafops/trust-test-1
