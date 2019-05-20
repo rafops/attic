@@ -102,9 +102,11 @@ brew install the_silver_searcher
 brew install jq
 brew install htop
 brew install shellcheck
+brew cask install iterm2
 brew cask install keepassxc
 brew cask install cyberduck
-brew cask install iterm2
+brew cask install cryptomator
+brew cask install keybase
 brew cask install atom
 ```
 
