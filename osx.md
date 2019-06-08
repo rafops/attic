@@ -61,6 +61,12 @@ ADMINISTRATOR_USER=$(whoami) && sudo dscl . create /Users/${ADMINISTRATOR_USER} 
 
 Download and replace `/etc/hosts` with the latest version of [this file](https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts).
 
+Clear DNS cache:
+
+```
+sudo killall -HUP mDNSResponder
+```
+
 Configure DNS servers:
 
 ```
