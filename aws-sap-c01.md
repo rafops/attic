@@ -81,6 +81,7 @@
 
 - Security; Linux Academy (01:31:00)
 - Security; A Cloud Guru, CHAPTER 4 (57:56)
+- [Amazon Web Services: Overview of Security Processes](https://d1.awsstatic.com/whitepapers/aws-security-whitepaper.pdf)
 
 **Reliability**
 
@@ -125,8 +126,10 @@
 
 ### Domain 5: Continuous Improvement for Existing Solutions (29%)
 
-- [AWS Serverless Computing](https://aws.amazon.com/serverless/)
+- [AWS Best Practices: Architecting for the Cloud](https://d1.awsstatic.com/whitepapers/AWS_Cloud_Best_Practices.pdf)
 - [AWS Training: EC2 Systems Manager](https://www.aws.training/Details/Curriculum?id=13830)
+- [AWS Serverless Computing](https://aws.amazon.com/serverless/)
+- [Implementing Microservices on AWS](https://d1.awsstatic.com/whitepapers/microservices-on-aws.pdf)
 - Continuous Improvement for Existing Solutions; Udemy (09:58:00)
 - Analytics, IoT, and Streaming; Linux Academy (02:20:00)
 - Application Integration; Linux Academy (02:01:00)
