@@ -59,18 +59,22 @@
 **Cross-account Authentication and Access Strategy**
 
 - AWS Identity Basics; Linux Academy (01:52:00)
+- [Active Directory Domain Services on AWS](https://d1.awsstatic.com/whitepapers/adds-on-aws.pdf)
 
-**Networks for Complex Organizations**
+**Networks**
 
 - Networking in AWS: Virtual Private Clouds (VPCs); Linux Academy (05:36:00)
 - [Amazon Virtual Private Cloud User Guide](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-ug.pdf)
 - [Amazon Virtual Private Cloud Connectivity Options](https://d1.awsstatic.com/whitepapers/aws-amazon-vpc-connectivity-options.pdf)
+- [AWS VPN FAQs](https://aws.amazon.com/vpn/faqs/)
+- [AWS Direct Connect FAQs](https://aws.amazon.com/directconnect/faqs/)
 - Networking; A Cloud Guru, CHAPTER 3 (01:30:10)
 
-**Multi-account Environment**
+**Multi-account Environments**
 
 - Account Management; Linux Academy (02:37:00)
 - [AWS Organizations User Guide](https://docs.aws.amazon.com/organizations/latest/userguide/organizations-userguide.pdf)
+- [AWS Organizations FAQs](https://aws.amazon.com/organizations/faqs/)
 - [AWS re:Inforce 2019: Managing Multi-Account AWS Environments Using AWS Organizations](https://www.youtube.com/watch?v=fxo67UeeN1A)
 
 ### Domain 2: Design for New Solutions (31%)
