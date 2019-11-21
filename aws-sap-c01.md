@@ -26,7 +26,7 @@
 - [AWS Training and Certification Learning Library](https://www.aws.training/LearningLibrary) (free)
 - ~~[Udemy: AWS Certified Solutions Architect Professional](https://www.udemy.com/course/amazon-certified-solutions-architect-professional) (CAD 140)~~
 - [Udemy: AWS Certified Solutions Architect - Professional 2019](https://www.udemy.com/course/aws-certified-solutions-architect-professional) (CAD 40)
-- [A Cloud Guru: AWS Certified Solutions Architect - Professional 2019](https://acloud.guru/learn/aws-certified-solutions-architect-professional-2019) (USD 29)
+- [A Cloud Guru: AWS Certified Solutions Architect - Professional 2019](https://acloud.guru/learn/aws-certified-solutions-architect-professional-2019) (USD 29) 💸
 - [Linux Academy: AWS Certified Solutions Architect – Professional](https://linuxacademy.com/course/aws-certified-solutions-architect-professional-2018/) (USD 40) 💸
 
 ## Practice Tests
@@ -80,6 +80,20 @@
 ### Domain 2: Design for New Solutions (31%)
 
 - Design for New Solutions; Udemy (17:07:46)
+- **EC2 Auto Scaling**
+- **ELB**: Middle-tier load balancer
+- **SQS**: Assynchronous tasks, single direction, unordered, “at least once” delivery
+- **SNS**: Fan out to Amazon SQS, assynchronous, batch processing
+- **Kinesis**: Assynchronous, single direction, ordered within a shard, “at least once” semantics, independent stream position, _Data Streams_ vs _Firehose_
+- **CloudFront**: Reduce traffic costs, increase performance, access to S3 restricted to _Origin Access Identities_ and AWS account trusted signer
+- **Route53**
+- **EBS**: Volume resize, change on type and throughtput while attached, EC2 maximum EBS throughput, OS-based RAIS sets
+- **RDS**: Scaling, replication, _ReplicaLag_
+- **ElastiCache**: _Redis_ and _Memcached_
+- **DynamoDB**: Caching, _DAX_ (read/write through cache), use of SQS to limit throughput (cost saving), autoscaling, _Global Tables_ (globally distributed, multi-region)
+- **CloudWatch**
+- **CloudFormation**
+
 
 **Security**
 
