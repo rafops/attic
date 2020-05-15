@@ -110,10 +110,8 @@ brew install htop
 brew install shellcheck
 brew cask install iterm2
 brew cask install keepassxc
-brew cask install cyberduck
 brew cask install cryptomator
-brew cask install keybase
-brew cask install atom
+brew cask install visual-studio-code
 ```
 
 ## User setup
@@ -132,12 +130,14 @@ Install oh-my-zsh:
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
-Install FiraCode font:
+Install JetBrains Mono font:
+
+https://www.jetbrains.com/lp/mono/
+
+## Spotlight fix
 
 ```
-curl -L -O https://github.com/tonsky/FiraCode/releases/download/1.206/FiraCode_1.206.zip
-unzip -d FiraCode_1.206 FiraCode_1.206.zip
-cd FiraCode_1.206
+touch /Applications/Xcode.app
 ```
 
-Check [FiraCode Atom instructions](https://github.com/tonsky/FiraCode/wiki/Atom-instructions).
+System Preferences > Spotlight > Search Results > Developer (uncheck)
