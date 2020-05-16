@@ -5,13 +5,16 @@
 - Unity
 - Unreal
 - Godot (open source)
+- Roblox (fast growing)
 
 ## Stages
 
-- Game Design
-- Prototyping
-- Development life cycle
-- Publishing
+- Identify the problem or concept
+- Game design
+- Prototyping. It can be a board-game style to proof the concept
+- Development life cycle (Build, Refine, Test, Evaluate, Iterate)
+- Publishing, share your game
+- Collect feedback, evaluate, refine
 
 
 ## Inspirational MMORPGs
@@ -44,6 +47,12 @@
 
 - Ortographic 3D (2.5D)
 - Old school (Phantasy Star)
-- Cartoonish vs realistic
+- Cartoonish vs realistic shader
 - Survival based without being too repetitive
 - Game is not endless
+- Turn based to simplify networking
+- User with bad connectivity is knocked out and cannot receive more damage until network is back for 5 seconds
+
+## Learning resources
+
+- [Reddit](https://www.reddit.com/r/gamedev/)

@@ -103,6 +103,7 @@ Install essential applications:
 brew install zsh
 brew install vim
 brew install curl
+brew install rsync
 brew install git
 brew install the_silver_searcher
 brew install jq
