@@ -113,6 +113,7 @@ brew cask install iterm2
 brew cask install keepassxc
 brew cask install cryptomator
 brew cask install visual-studio-code
+brew cask install docker
 ```
 
 ## User setup
@@ -141,4 +142,10 @@ https://www.jetbrains.com/lp/mono/
 touch /Applications/Xcode.app
 ```
 
-System Preferences > Spotlight > Search Results > Developer (uncheck)
+> System Preferences > Spotlight > Search Results > Developer (uncheck)
+
+## Catalina ITerm2 permissions fix
+
+You can grant ITerm2 full disk access temporarily to make system changes:
+
+> System Preferences > Security & Privacy > Full Disk Access > + > iTerm
