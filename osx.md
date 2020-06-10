@@ -100,20 +100,28 @@ See [brew.sh](https://brew.sh) for latest instructions.
 Install essential applications:
 
 ```
-brew install zsh
-brew install vim
-brew install curl
-brew install rsync
-brew install git
-brew install the_silver_searcher
-brew install jq
-brew install htop
-brew install shellcheck
-brew cask install iterm2
-brew cask install keepassxc
-brew cask install cryptomator
-brew cask install visual-studio-code
-brew cask install docker
+brew install zsh \
+             vim \
+             curl \
+             rsync \
+             git \
+             the_silver_searcher \
+             fzf \
+             bat \
+             prettyping \
+             diff-so-fancy \
+             fd \
+             ncdu \
+             tldr \
+             jq \
+             htop \
+             shellcheck
+
+brew cask install iterm2 \
+                  keepassxc \
+                  cryptomator \
+                  visual-studio-code \
+                  docker
 ```
 
 ## User setup
