@@ -114,6 +114,7 @@ brew cask install keepassxc
 brew cask install cryptomator
 brew cask install visual-studio-code
 brew cask install docker
+brew cask install karabiner-elements
 ```
 
 ## User setup
@@ -149,3 +150,11 @@ touch /Applications/Xcode.app
 You can grant ITerm2 full disk access temporarily to make system changes:
 
 > System Preferences > Security & Privacy > Full Disk Access > + > iTerm
+
+corespeechd is sending a massive amount to data to Internet
+
+1. System Preferences -> Accessibility -> Siri
+2. Click “Open Siri Preferences...”
+3. Check the box for “Enable Ask Siri”
+4. Move the radio button for “Voice Feedback” to “Off”
+5. Uncheck “Enable Ask Siri”
