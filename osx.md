@@ -119,6 +119,7 @@ brew install zsh \
 
 brew cask install iterm2 \
                   keepassxc \
+                  osxfuse \
                   cryptomator \
                   visual-studio-code \
                   docker
