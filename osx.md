@@ -122,7 +122,7 @@ brew install --cask iterm2 \
                     osxfuse \
                     cryptomator \
                     visual-studio-code \
-                    docker
+                    docker-desktop
 ```
 
 ## User setup
