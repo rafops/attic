@@ -117,12 +117,12 @@ brew install zsh \
              htop \
              shellcheck
 
-brew cask install iterm2 \
-                  keepassxc \
-                  osxfuse \
-                  cryptomator \
-                  visual-studio-code \
-                  docker
+brew install --cask iterm2 \
+                    keepassxc \
+                    osxfuse \
+                    cryptomator \
+                    visual-studio-code \
+                    docker
 ```
 
 ## User setup
