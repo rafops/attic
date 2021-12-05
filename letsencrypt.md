@@ -17,9 +17,9 @@ Certificates will be stored in `/etc/letsencrypt/live/example.com/`.
 ## Lighttpd
 
 ```
-  sudo cat /etc/letsencrypt/live/example.com/privkey.pem \
-           /etc/letsencrypt/live/example.com/cert.pem | \
-  sudo tee /etc/letsencrypt/live/example.com/combined.pem
+sudo cat /etc/letsencrypt/live/example.com/privkey.pem \
+         /etc/letsencrypt/live/example.com/cert.pem | \
+sudo tee /etc/letsencrypt/live/example.com/combined.pem
 ```
 
 ```
